@@ -6,7 +6,6 @@ CREATE TABLE images (
     updated_at TIMESTAMP,
     PRIMARY KEY (id)
 );
-
 CREATE TABLE users (
     id INT GENERATED ALWAYS AS IDENTITY,
     email VARCHAR(255),
@@ -15,7 +14,6 @@ CREATE TABLE users (
     role VARCHAR(255),
     PRIMARY KEY (id)
 );
-
 CREATE TABLE orders (
     id INT GENERATED ALWAYS AS IDENTITY,
     customer_id INT,
@@ -24,7 +22,6 @@ CREATE TABLE orders (
     PRIMARY KEY (id),
     FOREIGN KEY (customer_id) REFERENCES users(id)
 );
-
 CREATE TABLE products (
     id INT GENERATED ALWAYS AS IDENTITY,
     title VARCHAR(255),
@@ -34,7 +31,6 @@ CREATE TABLE products (
     PRIMARY KEY (id),
     FOREIGN KEY (image) REFERENCES images(id)
 );
-
 CREATE TABLE sessions (
     id CHAR(36),
     data TEXT,

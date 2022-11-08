@@ -1,10 +1,10 @@
-const connect = require('../database/connect.js')
-const { getUser } = require('../database/users.js')
+import connect from '../database/connect.js'
+import { getUser } from '../database/users.js'
 
-async function authenticateMiddleware(ctx, next) {
+export default async function authenticateMiddleware(ctx, next) {
     if (ctx.session.userId != null) {
         const db = await connect()
-        
+
         const user = await getUser(db, ctx.session.userId)
 
         ctx.user = user
@@ -12,5 +12,3 @@ async function authenticateMiddleware(ctx, next) {
 
     next()
 }
-
-module.exports = authenticateMiddleware

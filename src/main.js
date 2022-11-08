@@ -1,22 +1,25 @@
-require('dotenv').config()
-const RestLib = require('rest-library')
-const { parseBodyMiddleware } = require('rest-library/utils')
-const fs = require('fs')
-const { stat } = require('fs/promises')
-const crypto = require('crypto')
+import { config } from 'dotenv'
+config()
+import RestLib from 'rest-library'
+import { parseBodyMiddleware } from 'rest-library/utils.js'
+import fs from 'fs'
+import { stat } from 'fs/promises'
+import crypto from 'crypto'
 
-const busboy = require('busboy')
+import busboy from 'busboy'
 
-const connect = require('./database/connect')
-const { addUser, getUserByCredentials } = require('./database/users.js')
+import connect from './database/connect.js'
+import { addUser, getUserByCredentials } from './database/users.js'
 
-const { getRowsToUpdate } = require('./helpers/database')
+import { getRowsToUpdate } from './helpers/database.js'
 
-const parseCookieMiddleware = require('./middleware/parseCookie.js')
-const onlyAuthenticatedMiddleware = require('./middleware/onlyAuthenticated.js')
-const authenticateMiddleware = require('./middleware/authenticate.js')
-const sessionMiddleware = require('./middleware/session.js')
-const { deleteSession, updateSession } = require('./database/sessions')
+import parseCookieMiddleware from './middleware/parseCookie.js'
+import onlyAuthenticatedMiddleware from './middleware/onlyAuthenticated.js'
+import authenticateMiddleware from './middleware/authenticate.js'
+import sessionMiddleware from './middleware/session.js'
+import { deleteSession, updateSession } from './database/sessions.js'
+
+
 
 const parseFormDataBody = (ctx, next) => new Promise((resolve) => {
     const { request } = ctx
@@ -55,7 +58,7 @@ app.use((ctx, next) => {
 app.notFound((ctx) => {
     ctx.response.setHeader('Access-Control-Allow-Origin', '*')
     ctx.response.status = 404
-    ctx.response.send({error: 'Not found'})
+    ctx.response.send({ error: 'Not found' })
 })
 
 app.error((ctx, error) => {
@@ -89,7 +92,7 @@ app.use(authenticateMiddleware)
  * ----------- AUTHENTICATION -----------
  */
 
- function userBodyValidation (ctx, next) {
+function userBodyValidation(ctx, next) {
     const { body } = ctx.request
 
     if (body.email == null || body.password == null) {
@@ -222,8 +225,8 @@ app.patch('/order/:orderId', async (ctx) => {
     const rowsToUpdate = getRowsToUpdate(ctx.request.body)
 
     const order = (await db.query(`UPDATE orders SET ${rowsToUpdate} WHERE id = $${rowsToUpdate.length + 1} RETURNING *`, Object.values(ctx.request.body).map(
-        val => typeof val === 'object' 
-            ? JSON.stringify(val) 
+        val => typeof val === 'object'
+            ? JSON.stringify(val)
             : val
     ).concat(ctx.request.params.orderId))).rows[0]
 

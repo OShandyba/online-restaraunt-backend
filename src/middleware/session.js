@@ -1,17 +1,16 @@
-const cookie = require('cookie')
-const crypto = require('node:crypto')
-const connect = require('../database/connect.js')
+import cookie from 'cookie'
+import { randomUUID as generateSID } from 'node:crypto'
+import connect from '../database/connect.js'
 
-const { addSession, getSession } = require('../database/sessions.js')
+import { addSession, getSession } from '../database/sessions.js'
 
-const generateSID = crypto.randomUUID
 const sessionIdCookieName = 'SID'
 
 function createSession() {
     return { id: generateSID() }
 }
 
-async function sessionMiddleware(ctx, next) {
+export default async function sessionMiddleware(ctx, next) {
     if (ctx.session != null) {
         next()
         return
@@ -39,5 +38,3 @@ async function sessionMiddleware(ctx, next) {
 
     next()
 }
-
-module.exports = sessionMiddleware

@@ -1,4 +1,4 @@
-function onlyAuthorizedMiddleware(ctx, next) {
+export function onlyAuthorizedMiddleware(ctx, next) {
     if (ctx.user) {
         next()
     } else {
@@ -7,5 +7,3 @@ function onlyAuthorizedMiddleware(ctx, next) {
         }, 401)
     }
 }
-
-module.exports = onlyAuthorizedMiddleware

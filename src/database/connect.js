@@ -1,10 +1,11 @@
-const { Client } = require('pg')
-const { memorize } = require('../helpers/functions.js')
+import pg from 'pg'
+import once from '../helpers/functions.js'
+const { Client } = pg
 
-async function connect() {
+export async function connect() {
     const client = new Client()
     await client.connect()
     return client
 }
 
-module.exports = memorize(connect)
+export default once(connect)

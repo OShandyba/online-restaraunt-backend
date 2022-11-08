@@ -1,4 +1,4 @@
-function memorize(fn) {
+export default function once(fn) {
     let cache = null
     return (...args) => {
         if (cache === null) {
@@ -6,8 +6,4 @@ function memorize(fn) {
         }
         return cache
     }
-}
-
-module.exports = {
-    memorize,
 }
